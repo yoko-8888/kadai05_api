@@ -1,0 +1,68 @@
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* ページ全体の高さを確保 */
+    background-image: url('../img/img01.png'); /* 背景画像 */
+    background-size: cover; /* 画像を画面いっぱいに広げる */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    text-align: left; /* 全体のテキストを左揃え */
+}
+
+header, .select-container, main, button {
+    position: relative;
+    z-index: 1;
+    text-align: left; /* テキストを左揃えに変更 */
+}
+
+h1 {
+    font-size: 3em;
+    color: #333; /* テキストの色を調整 */
+    text-align: left; /* 見出しを左揃え */
+}
+
+.date {
+    position: relative; 
+    font-weight: 400;
+    font-style: normal;
+    font-size: 20px;
+    margin-top: 20px;
+    text-align: left; /* 左揃え */
+}
+
+main {
+    position: relative;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 40px;
+    margin-top: 20px;
+    text-align: left; /* 左揃え */
+}
+
+
+button#memory {
+    padding: 10px 20px;
+    font-size: 16px; /* ボタンの文字サイズを調整 */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* ボタン内の要素を左揃え */
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px; /* ボタンの上に余白を追加 */
+}
+
+textarea {
+    width: 75%;
+    height: 100px;
+    font-size: 16px;
+    padding: 0.5em;
+    margin: 0.5em 0;
+    border: double 10px black;
+    text-align: left; /* テキストエリア内の文字を左揃え */
+    box-sizing: border-box;
+}
+

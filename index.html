@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学習記録とBook検索</title>
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+    <!-- コンテンツ表示画面 -->
+
+
+    <header>
+        <h1 id="heading"><b>学びの記録</b></h1>
+    </header>
+
+    <div class="select-container">
+        <select id="box"></select>
+        <select id="box2"></select>
+        <select id="box3"></select>
+    </div>
+
+    <main style="display: none;">
+        <!-- <h2><b>学びの記録</b></h2>  -->
+        <textarea name="study" id="study"></textarea>
+    <!-- </main> -->
+
+    <!-- <main class="event" style="display: none;">  -->
+        <!-- <h2><b>学びの記録</b></h2> -->
+        <!-- <textarea name="study" id="study"></textarea> -->
+    <!-- </main> -->
+    </main>
+
+    <button id="memory">memory</button>
+        
+
+    <!-- book検索 -->
+    <h1>Book検索</h1>
+    <p>わからないことがあったら本で調べてみてね</p>
+
+    <div>
+        <input type="text" id="key">
+        <button id="send">検索</button>
+    </div>
+    <div>
+        <table id="list">
+            <tr>
+                <td style="width:400px">Title</td>
+                <td style="width:400px">Visual</td>
+            </tr>
+        </table>
+    </div>
+
+
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- JQuery -->
+
+<!-- firebaseの設定 -->
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+  import { getDatabase, ref, push, set, onChildAdded, remove, onChildRemoved } 
+    from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "*****",
+    authDomain: "*****",
+    projectId: "*****",
+    storageBucket: "*****",
+    messagingSenderId: "*****",
+    appId: "*****"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+
+  $("main").slideDown(2000);
+
+    //年、月、日をセレクト
+// 年の選択肢を追加
+const yearSelect = document.getElementById('box');
+for (let i = 2024; i <= 2034; i++) {
+    const option = document.createElement('option');
+    option.value = i;
+    option.text = i;
+    yearSelect.appendChild(option);
+}
+
+// 月の選択肢を追加
+const monthSelect = document.getElementById('box2');
+for (let i = 1; i <= 12; i++) {
+    const option = document.createElement('option');
+    option.value = i;
+    option.text = i;
+    monthSelect.appendChild(option);
+}
+
+// 日の選択肢を追加
+const daySelect = document.getElementById('box3');
+for (let i = 1; i <= 31; i++) {
+    const option = document.createElement('option');
+    option.value = i;
+    option.text = i;
+    daySelect.appendChild(option);
+}
+
+        //1.memory クリックイベント
+        $("#memory").on("click",function(){
+            const value1 = $("#study").val();
+            localStorage.setItem("study",value1);
+            alert("お疲れさまでした！");
+        });
+
+
+
+      //Book検索ボタンをクリックした場合
+      $("#send").on("click",function(){
+        const url = "https://www.googleapis.com/books/v1/volumes?q="+$("#key").val(); 
+        $.ajax({
+            url: url,
+            dataType: "json"
+        }).done(function(data) {
+            //書籍Title、Image[リンク]
+            console.log(data);             //オブジェクトの中を確認
+            const len = data.items.length; //データの数を取得
+            let html;
+            for(let i=0; i<len; i++){
+                console.log(typeof data.items[i].volumeInfo.publisher);
+                if(typeof data.items[i].volumeInfo.publisher=="undefined"){
+                    data.items[i].volumeInfo.publisher="出版社（不明）";
+                }
+                html += `
+                    <tr>
+                        <td>${data.items[i].volumeInfo.title}</td>
+                        <td>
+                            <a target="_blank" href="${data.items[i].volumeInfo.infoLink}">
+                                <img src="${data.items[i].volumeInfo.imageLinks.thumbnail}">
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            }
+
+
+            //table要素のid="list"に追加
+            $("#list").empty().hide().append(html).fadeIn(1000);
+        });
+    });
+
+</script>
+
+
+    
+</body>
+</html>
